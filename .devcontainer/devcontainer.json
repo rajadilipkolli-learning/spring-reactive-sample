@@ -19,7 +19,9 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"vscjava.vscode-lombok"
+				"vscjava.vscode-lombok",
+				"vscjava.vscode-java-pack",
+				"vmware.vscode-boot-dev-pack"
 			]
 		}
 	}
