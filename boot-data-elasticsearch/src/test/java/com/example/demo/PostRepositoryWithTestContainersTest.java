@@ -51,19 +51,20 @@ class PostRepositoryWithTestContainersTest {
                         ),
                         RefreshPolicy.IMMEDIATE
                 )
-                .doOnTerminate(() -> {
-                    log.debug("terminating...");
-                    //countDownLatch.countDown();
+                .doOnError(ex -> log.error("failed to seed test data", ex))
+                .doFinally(signal -> {
+                    log.debug("seeding finished with signal: {}", signal);
+                    countDownLatch.countDown();
                 })
                 .doOnComplete(() -> {
                     log.debug("completing...");
-                    countDownLatch.countDown();
                 })
                 .subscribe(data -> {
                     log.debug("saved data: {}", data);
                 });
 
-        countDownLatch.await(5000, MILLISECONDS);
+        boolean seeded = countDownLatch.await(5000, MILLISECONDS);
+        assertThat(seeded).as("Timed out waiting for Elasticsearch seed data").isTrue();
         log.debug("the sample data is ready ...");
     }
 
