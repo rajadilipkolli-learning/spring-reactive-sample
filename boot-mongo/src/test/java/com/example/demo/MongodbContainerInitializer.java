@@ -19,7 +19,7 @@ class MongodbContainerInitializer implements
     configurableApplicationContext
         .addApplicationListener(
             (ApplicationListener<ContextClosedEvent>) event -> container.stop());
-    log.debug("container.getFirstMappedPort():" + container.getFirstMappedPort());
+    log.debug("container.getFirstMappedPort(): {}", container.getFirstMappedPort());
     TestPropertyValues
         .of("spring.mongodb.uri=mongodb://localhost:" + container.getFirstMappedPort()
             + "/blog")
