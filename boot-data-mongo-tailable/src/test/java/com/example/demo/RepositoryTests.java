@@ -10,9 +10,9 @@ import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.mongodb.MongoDBContainer;
 import reactor.test.StepVerifier;
 
 import java.util.List;
@@ -32,7 +32,7 @@ class RepositoryTests {
 
     @DynamicPropertySource
     static void initMongoProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.mongodb.uri", () -> container.getReplicaSetUrl("chatroom"));
+        registry.add("spring.mongodb.uri", () -> container.getReplicaSetUrl("chatroom"));
     }
 
     @Autowired
