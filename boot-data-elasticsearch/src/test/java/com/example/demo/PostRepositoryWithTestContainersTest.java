@@ -40,12 +40,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PostRepositoryWithTestContainersTest {
 
     @Container
-    static ElasticsearchContainer esContainer = new ElasticsearchContainer("docker.elastic.co/elasticsearch/elasticsearch:7.17.9")
+    static ElasticsearchContainer esContainer = new ElasticsearchContainer("docker.elastic.co/elasticsearch/elasticsearch:8.11.3")
             .withEnv(Map.of(
                     "discovery.type", "single-node",
                     "ES_JAVA_OPTS", "-Xms512m -Xmx512m",
-                    "xpack.security.enabled", "false"
-            ));
+                    "xpack.security.enabled", "false",
+                    "http.host", "0.0.0.0"
+            ))
+            .withStartupTimeout(Duration.ofMinutes(5));
 
     @DynamicPropertySource
     static void esProperties(DynamicPropertyRegistry registry) {
