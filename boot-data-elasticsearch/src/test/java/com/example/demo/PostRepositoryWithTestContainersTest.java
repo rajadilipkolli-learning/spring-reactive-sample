@@ -5,54 +5,32 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.elasticsearch.test.autoconfigure.DataElasticsearchTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ReactiveElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.RefreshPolicy;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.elasticsearch.ElasticsearchContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataElasticsearchTest
-//@AutoConfigureDataElasticsearch
-@Testcontainers
 @ActiveProfiles("test")
+@Import(ContainersConfig.class)
 @Slf4j
 // Testcontainers does not work well with per_class testinstance.
 // see: https://stackoverflow.com/questions/61357116/exception-mapped-port-can-only-be-obtained-after-the-container-is-started-when/61358336#61358336
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class PostRepositoryWithTestContainersTest {
 
-    @Container
-    static ElasticsearchContainer esContainer = new ElasticsearchContainer("docker.elastic.co/elasticsearch/elasticsearch:8.11.3")
-            .withEnv(Map.of(
-                    "discovery.type", "single-node",
-                    "ES_JAVA_OPTS", "-Xms512m -Xmx512m",
-                    "xpack.security.enabled", "false",
-                    "http.host", "0.0.0.0"
-            ))
-            .withStartupTimeout(Duration.ofMinutes(5));
-
-    @DynamicPropertySource
-    static void esProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.elasticsearch.uris", esContainer::getHttpHostAddress);
-    }
 
     @Autowired
     PostRepository posts;
@@ -87,11 +65,6 @@ class PostRepositoryWithTestContainersTest {
 
         countDownLatch.await(5000, MILLISECONDS);
         log.debug("the sample data is ready ...");
-    }
-
-    @Test
-    void testDatabaseIsRunning() {
-        assertThat(esContainer.isRunning()).isTrue();
     }
 
    @Test

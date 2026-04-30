@@ -21,7 +21,7 @@ class MongodbContainerInitializer implements ApplicationContextInitializer<Confi
                 .addApplicationListener((ApplicationListener<ContextClosedEvent>) event -> mongoDBContainer.stop());
         log.debug("mongoDBContainer.getReplicaSetUrl():" + mongoDBContainer.getReplicaSetUrl("blog"));
         TestPropertyValues
-                .of("spring.data.mongodb.uri=" + mongoDBContainer.getReplicaSetUrl("blog"))
+                .of("spring.mongodb.uri=" + mongoDBContainer.getReplicaSetUrl("blog"))
                 .applyTo(configurableApplicationContext.getEnvironment());
     }
 }

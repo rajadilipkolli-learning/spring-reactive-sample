@@ -40,7 +40,7 @@ public class PostRepositoryWithDynamicPropertiesTest {
     static void initMongoProperties(DynamicPropertyRegistry registry) {
         log.debug("container url: {}", container.getReplicaSetUrl("/blog"));
         log.debug("container host/port: {}/{}", container.getHost(), container.getFirstMappedPort());
-        registry.add("spring.data.mongodb.uri", () -> container.getReplicaSetUrl("blog"));
+        registry.add("spring.mongodb.uri", () -> container.getReplicaSetUrl("blog"));
     }
 
     @TestConfiguration()
