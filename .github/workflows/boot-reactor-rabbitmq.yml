@@ -23,16 +23,11 @@ jobs:
       with:
           fetch-depth: 0
     - name: Set up JDK
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v5
       with:
         java-version: '21'
         distribution: 'temurin'
-        cache: 'maven'
-    - name: Start up RabbitMQ via Docker Compose 
-      run: |
-        docker compose up -d rabbitmq
-        sleep 20
-        docker ps -a   
+        cache: 'maven'  
     - name: Build Sender with Maven
       run: |
         cd boot-reactor-rabbitmq/sender
