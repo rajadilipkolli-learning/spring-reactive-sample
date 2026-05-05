@@ -1,7 +1,7 @@
 package com.example.demo;
 
 
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.common.Json;
 import com.github.tomakehurst.wiremock.http.Body;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
@@ -47,7 +47,6 @@ public class PostClientTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    @SneakyThrows
     @BeforeEach
     public void setup() {
     }

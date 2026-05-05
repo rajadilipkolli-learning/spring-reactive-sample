@@ -1,8 +1,7 @@
 package com.example.demo;
 
 
-import tools.jackson.databind.ObjectMapper;
-import tools.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty5.channel.ChannelOption;
 import io.netty5.handler.logging.LogLevel;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +22,7 @@ public class ClientConfig {
     }
 
     @Bean
-    public WebClient webClient(JsonMapper objectMapper) {
+    public WebClient webClient(ObjectMapper objectMapper) {
         var reactorHttpClient = HttpClient.create()
                 .wiretap("reactor.netty5.http.client.HttpClient", LogLevel.DEBUG, AdvancedBufferFormat.TEXTUAL)
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000);
@@ -44,9 +43,9 @@ public class ClientConfig {
                             // Or
                             // use customCodecs to register Codecs from scratch.
                             clientCodecConfigurer.customCodecs()
-                                    .register(new JacksonJsonDecoder(objectMapper));
+                                    .register(new Jackson2JsonDecoder(objectMapper));
                             clientCodecConfigurer.customCodecs()
-                                    .register(new JacksonJsonEncoder(objectMapper));
+                                    .register(new Jackson2JsonEncoder(objectMapper));
                         }
 
                 )
