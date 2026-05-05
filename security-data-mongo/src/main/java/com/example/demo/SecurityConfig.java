@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authorization.AuthorizationDecision;
+import org.springframework.security.authorization.AuthorizationResult;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.core.Authentication;
@@ -33,7 +34,7 @@ class SecurityConfig {
     }
 
     @Bean
-    SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http) throws Exception {
+    SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http) {
         return http
             .authorizeExchange(exchange -> exchange
                 .pathMatchers(HttpMethod.GET, "/posts/**").permitAll()
@@ -43,10 +44,10 @@ class SecurityConfig {
             .build();
     }
 
-    private Mono<AuthorizationDecision> currentUserMatchesPath(Mono<Authentication> authentication, AuthorizationContext context) {
+    private Mono<AuthorizationResult> currentUserMatchesPath(Mono<Authentication> authentication, AuthorizationContext context) {
         return authentication
                 .map(a -> context.getVariables().get("user").equals(a.getName()))
-                .map(AuthorizationDecision::new);
+                .map(granted -> (AuthorizationResult) new AuthorizationDecision(granted));
     }
 
     @Bean
