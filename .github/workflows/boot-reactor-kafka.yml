@@ -28,11 +28,6 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: 'maven'
-    - name: Start up Kafka via Docker Compose 
-      run: |
-        docker compose up -d zookeeper kafka
-        sleep 30
-        docker ps -a   
     - name: Build Sender with Maven
       run: |
         cd boot-reactor-kafka/sender
