@@ -1,7 +1,7 @@
 package com.example.demo;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.logging.LogLevel;
 import lombok.SneakyThrows;

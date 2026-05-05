@@ -1,11 +1,11 @@
 package com.example.demo;
 
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.SerializationFeature;
+import tools.jackson.databind.ext.jdk8.Jdk8Module;
+import tools.jackson.databind.ext.javatime.JavaTimeModule;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.logging.LogLevel;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
