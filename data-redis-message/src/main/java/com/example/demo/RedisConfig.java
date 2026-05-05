@@ -5,7 +5,8 @@
  */
 package com.example.demo;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,8 +18,8 @@ import org.springframework.data.redis.listener.ReactiveRedisMessageListenerConta
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import reactor.core.publisher.Mono;
+import tools.jackson.core.JacksonException;
 
-import java.io.IOException;
 import java.util.UUID;
 
 /**
@@ -57,7 +58,7 @@ public class RedisConfig {
     @Bean
     public ReactiveRedisMessageListenerContainer redisMessageListenerContainer(PostRepository posts, ReactiveRedisConnectionFactory connectionFactory) {
         ReactiveRedisMessageListenerContainer container = new ReactiveRedisMessageListenerContainer(connectionFactory);
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new JsonMapper();
         container.receive(ChannelTopic.of("posts"))
                 .map(p -> p.getMessage())
                 .map(m -> {
@@ -65,7 +66,7 @@ public class RedisConfig {
                         Post post = objectMapper.readValue(m, Post.class);
                         post.setId(UUID.randomUUID().toString());
                         return post;
-                    } catch (IOException e) {
+                    } catch (JacksonException e) {
                         return null;
                     }
                 })
