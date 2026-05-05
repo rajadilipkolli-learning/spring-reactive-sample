@@ -1,16 +1,15 @@
 package com.example.demo;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.pulsar.client.api.PulsarClientException;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.pulsar.reactive.core.ReactivePulsarTemplate;
+import org.testcontainers.containers.PulsarContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.pulsar.PulsarContainer;
 import org.testcontainers.utility.DockerImageName;
 import reactor.test.StepVerifier;
 
