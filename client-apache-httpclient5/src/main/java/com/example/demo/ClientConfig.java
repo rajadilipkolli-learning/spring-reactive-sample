@@ -1,27 +1,15 @@
 package com.example.demo;
 
 
-import tools.jackson.databind.DeserializationFeature;
-import tools.jackson.databind.ObjectMapper;
-import tools.jackson.databind.SerializationFeature;
-import tools.jackson.databind.ext.jdk8.Jdk8Module;
-import tools.jackson.databind.ext.javatime.JavaTimeModule;
-import io.netty.channel.ChannelOption;
-import io.netty.handler.logging.LogLevel;
-import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
+import tools.jackson.databind.json.JsonMapper;
 import org.apache.hc.client5.http.impl.async.HttpAsyncClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.HttpComponentsClientHttpConnector;
-import org.springframework.http.client.reactive.ReactorClientHttpConnector;
-import org.springframework.http.codec.json.Jackson2JsonDecoder;
-import org.springframework.http.codec.json.Jackson2JsonEncoder;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.http.codec.json.JacksonJsonDecoder;
+import org.springframework.http.codec.json.JacksonJsonEncoder;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.netty.http.client.HttpClient;
-import reactor.netty.transport.logging.AdvancedByteBufFormat;
 
 @Configuration
 public class ClientConfig {
@@ -31,7 +19,7 @@ public class ClientConfig {
     }
 
     @Bean
-    public WebClient webClient(ObjectMapper objectMapper) {
+    public WebClient webClient(JsonMapper objectMapper) {
         var httpAsyncClient = HttpAsyncClients.createHttp2Default();
         HttpComponentsClientHttpConnector apacheClientHttpConnector = new HttpComponentsClientHttpConnector(httpAsyncClient);
 
@@ -50,9 +38,9 @@ public class ClientConfig {
                             // Or
                             // use customCodecs to register Codecs from scratch.
                             clientCodecConfigurer.customCodecs()
-                                    .register(new Jackson2JsonDecoder(objectMapper));
+                                    .register(new JacksonJsonDecoder(objectMapper));
                             clientCodecConfigurer.customCodecs()
-                                    .register(new Jackson2JsonEncoder(objectMapper));
+                                    .register(new JacksonJsonEncoder(objectMapper));
                         }
 
                 )

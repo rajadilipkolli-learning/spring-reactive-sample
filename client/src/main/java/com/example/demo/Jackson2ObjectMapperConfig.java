@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 public class Jackson2ObjectMapperConfig {
 
     @Bean
-    public JsonMapper objectMapper() {
+    JsonMapper objectMapper() {
         return JsonMapper.builder()
                 .changeDefaultPropertyInclusion(include -> include.withValueInclusion(JsonInclude.Include.NON_EMPTY))
                 .disable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS)

@@ -16,12 +16,12 @@ import reactor.netty.transport.logging.AdvancedByteBufFormat;
 @Configuration
 public class ClientConfig {
     @Bean
-    public PostClient postClient(WebClient webClient) {
+    PostClient postClient(WebClient webClient) {
         return new PostClient(webClient);
     }
 
     @Bean
-    public WebClient webClient(JsonMapper objectMapper) {
+    WebClient webClient(JsonMapper objectMapper) {
         var reactorHttpClient = HttpClient.create()
                 .wiretap("reactor.netty.http.client.HttpClient", LogLevel.DEBUG,
                         AdvancedByteBufFormat.TEXTUAL)
