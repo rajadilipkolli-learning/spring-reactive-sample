@@ -15,7 +15,7 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.ReactiveRedisMessageListenerContainer;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.JacksonJsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import reactor.core.publisher.Mono;
 import tools.jackson.core.JacksonException;
@@ -51,7 +51,7 @@ public class RedisConfig {
     public ReactiveRedisTemplate<String, Post> reactiveRedisTemplate(ReactiveRedisConnectionFactory factory) {
         return new ReactiveRedisTemplate<String, Post>(
                 factory,
-                RedisSerializationContext.fromSerializer(new Jackson2JsonRedisSerializer(Post.class))
+                RedisSerializationContext.fromSerializer(new JacksonJsonRedisSerializer(Post.class))
         );
     }
 
