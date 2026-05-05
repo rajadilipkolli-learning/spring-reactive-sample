@@ -35,13 +35,12 @@ class SecurityConfig {
     @Bean
     SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http) throws Exception {
         return http
-                .authorizeExchange()
+            .authorizeExchange(exchange -> exchange
                 .pathMatchers(HttpMethod.GET, "/posts/**").permitAll()
                 .pathMatchers(HttpMethod.DELETE, "/posts/**").hasRole("ADMIN")
                 .pathMatchers("/users/{user}/**").access(this::currentUserMatchesPath)
-                .anyExchange().authenticated()
-                .and()
-                .build();
+                .anyExchange().authenticated())
+            .build();
     }
 
     private Mono<AuthorizationDecision> currentUserMatchesPath(Mono<Authentication> authentication, AuthorizationContext context) {
