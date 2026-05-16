@@ -22,8 +22,8 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataNeo4jTest
-@Transactional(propagation = Propagation.NEVER)
-@Import(ContainersConfig.class, Post)
+@Transactional(propagation = Propagation.NOT_SUPPORTED) // reactive is not supported
+@Import(ContainersConfig.class)
 @Slf4j
 public class PostRepositoryWithTestcontainersTest {
 

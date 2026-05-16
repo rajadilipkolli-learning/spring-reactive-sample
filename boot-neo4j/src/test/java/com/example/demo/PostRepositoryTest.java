@@ -5,16 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.neo4j.test.autoconfigure.DataNeo4jTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.neo4j.Neo4jContainer;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -32,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Transactional(propagation = Propagation.NOT_SUPPORTED) // reactive is not supported
 @Slf4j
 @ActiveProfiles("test")
-@Import(Neo4jTxConfiguration.class, ContainersConfig.class)
+@Import(value = {Neo4jTxConfiguration.class, ContainersConfig.class})
 public class PostRepositoryTest {
 
     @Autowired
