@@ -9,6 +9,8 @@ import org.springframework.boot.data.neo4j.test.autoconfigure.DataNeo4jTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -20,7 +22,8 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataNeo4jTest
-@Import(ContainersConfig.class)
+@Transactional(propagation = Propagation.NEVER)
+@Import(ContainersConfig.class, Post)
 @Slf4j
 public class PostRepositoryWithTestcontainersTest {
 
