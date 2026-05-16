@@ -157,6 +157,9 @@
 				<artifactId>kotlin-maven-plugin</artifactId>
 				<groupId>org.jetbrains.kotlin</groupId>
 				<configuration>
+					<args>
+						<arg>-Xannotation-default-target=param-property</arg>
+					</args>
 					<compilerPlugins>
 						<plugin>spring</plugin>
 					</compilerPlugins>
