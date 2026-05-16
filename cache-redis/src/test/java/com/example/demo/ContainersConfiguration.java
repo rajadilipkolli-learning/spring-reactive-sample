@@ -2,6 +2,7 @@ package com.example.demo;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -16,42 +17,47 @@ import static com.redis.testcontainers.RedisContainer.DEFAULT_TAG;
 @TestConfiguration(proxyBeanMethods = false)
 public class ContainersConfiguration implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
-    @Bean
-    public PostgreSQLContainer postgresContainer() {
-        return createPostgresContainer();
-    }
+    private static final PostgreSQLContainer POSTGRES = new PostgreSQLContainer(
+            DockerImageName.parse("postgres:18.4-alpine"))
+            .withCopyFileToContainer(
+                    MountableFile.forClasspathResource("init.sql"),
+                    "/docker-entrypoint-initdb.d/init.sql");
 
-    private static PostgreSQLContainer createPostgresContainer() {
-        return new PostgreSQLContainer(DockerImageName.parse("postgres:18.4-alpine"))
-                .withCopyFileToContainer(
-                        MountableFile.forClasspathResource("init.sql"),
-                        "/docker-entrypoint-initdb.d/init.sql");
+    private static final RedisContainer REDIS = new RedisContainer(DEFAULT_IMAGE_NAME.withTag(DEFAULT_TAG));
+
+    @Bean
+    PostgreSQLContainer postgresContainer() {
+        return POSTGRES;
     }
 
     @Bean
     public RedisContainer redisContainer() {
-        return createRedisContainer();
-    }
-
-    private static RedisContainer createRedisContainer() {
-        return new RedisContainer(DEFAULT_IMAGE_NAME.withTag(DEFAULT_TAG));
+        return REDIS;
     }
 
     @Override
     public void initialize(ConfigurableApplicationContext context) {
-        PostgreSQLContainer postgres = createPostgresContainer();
-        postgres.start();
-        RedisContainer redis = createRedisContainer();
-        redis.start();
+        if (!POSTGRES.isRunning()) {
+            POSTGRES.start();
+        }
+        if (!REDIS.isRunning()) {
+            REDIS.start();
+        }
 
+        context.addApplicationListener((event) -> {
+            if (event instanceof ContextClosedEvent) {
+                POSTGRES.stop();
+                REDIS.stop();
+            }
+        });
         TestPropertyValues.of(
-                "r2dbc.host=" + postgres.getHost(),
-                "r2dbc.port=" + postgres.getFirstMappedPort(),
-                "r2dbc.username=" + postgres.getUsername(),
-                "r2dbc.password=" + postgres.getPassword(),
-                "r2dbc.database=" + postgres.getDatabaseName(),
-                "redis.host=" + redis.getHost(),
-                "redis.port=" + redis.getFirstMappedPort()
+                "r2dbc.host=" + POSTGRES.getHost(),
+                "r2dbc.port=" + POSTGRES.getFirstMappedPort(),
+                "r2dbc.username=" + POSTGRES.getUsername(),
+                "r2dbc.password=" + POSTGRES.getPassword(),
+                "r2dbc.database=" + POSTGRES.getDatabaseName(),
+                "redis.host=" + REDIS.getHost(),
+                "redis.port=" + REDIS.getFirstMappedPort()
         ).applyTo(context.getEnvironment());
     }
 

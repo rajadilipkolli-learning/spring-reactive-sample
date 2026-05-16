@@ -19,22 +19,23 @@ public class Application {
     }
 
     public static void run(String[] args, org.springframework.context.ApplicationContextInitializer<org.springframework.context.ConfigurableApplicationContext>... initializers) {
-        var context = new org.springframework.context.annotation.AnnotationConfigApplicationContext();
-        for (var initializer : initializers) {
-            initializer.initialize(context);
-        }
-        context.register(Application.class);
-        context.refresh();
+        try (var context = new AnnotationConfigApplicationContext()) {
+            for (var initializer : initializers) {
+                initializer.initialize(context);
+            }
+            context.register(Application.class);
+            context.refresh();
 
-        var posts = context.getBean(PostRepository.class);
-        posts.saveAll(
-                        List.of(
-                                Post.of("What is new in Spring 6.1", "An introduction to new features from Spring 6.1"),
-                                Post.of("Spring Boot 3.2", "An introduction to new features in Spring Boot 3.2")
-                        )
-                )
-                .thenMany(posts.findAll())
-                .subscribe(post -> log.debug("get the initialized data: {}", post));
-                System.out.println("... the end...");
+            var posts = context.getBean(PostRepository.class);
+            posts.saveAll(
+                            List.of(
+                                    Post.of("What is new in Spring 6.1", "An introduction to new features from Spring 6.1"),
+                                    Post.of("Spring Boot 3.2", "An introduction to new features in Spring Boot 3.2")
+                            )
+                    )
+                    .thenMany(posts.findAll())
+                    .subscribe(post -> log.debug("get the initialized data: {}", post));
+            System.out.println("... the end...");
+        }
     }
 }
