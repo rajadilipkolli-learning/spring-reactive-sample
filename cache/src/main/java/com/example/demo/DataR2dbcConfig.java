@@ -37,7 +37,7 @@ public class DataR2dbcConfig extends AbstractR2dbcConfiguration {
     String password;
 
     @Bean
-    public ConnectionFactory connectionFactory() {
+    ConnectionFactory connectionFactory() {
         log.debug("Connecting to host:{},port:{},database:{},username:{},password:{}",
                 host, port, databaseName, userName, password);
         return new PostgresqlConnectionFactory(
@@ -57,7 +57,7 @@ public class DataR2dbcConfig extends AbstractR2dbcConfiguration {
     }
 
     @Bean
-    public ConnectionFactoryInitializer initializer(ConnectionFactory connectionFactory) {
+    ConnectionFactoryInitializer initializer(ConnectionFactory connectionFactory) {
 
         ConnectionFactoryInitializer initializer = new ConnectionFactoryInitializer();
         initializer.setConnectionFactory(connectionFactory);

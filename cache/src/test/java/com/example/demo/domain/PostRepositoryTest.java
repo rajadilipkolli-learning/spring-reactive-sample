@@ -6,7 +6,8 @@ import com.example.demo.DataR2dbcConfig;
 import com.example.demo.Post;
 import com.example.demo.PostRepository;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,10 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-@Slf4j
-@SpringJUnitConfig(classes = {PostRepositoryTest.TestConfig.class})
+@SpringJUnitConfig(classes = { PostRepositoryTest.TestConfig.class })
 public class PostRepositoryTest {
+
+    private static final Logger log = LoggerFactory.getLogger(PostRepositoryTest.class);
 
     @Autowired
     PostRepository posts;
