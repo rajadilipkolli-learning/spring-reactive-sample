@@ -16,6 +16,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.DELETE;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
@@ -87,7 +88,7 @@ class PostHandler {
 @Slf4j
 class PostRepository {
 
-    private static final List<Post> DATA = new ArrayList<>();
+    private static final List<Post> DATA = new CopyOnWriteArrayList<>();
 
     static {
         DATA.add(Post.builder().id(UUID.randomUUID()).title("post one").content("content of post one").build());
