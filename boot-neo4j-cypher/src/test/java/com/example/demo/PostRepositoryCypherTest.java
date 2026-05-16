@@ -11,7 +11,6 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.util.Comparator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -55,10 +54,15 @@ public class PostRepositoryCypherTest {
 
     @Test
     void testAllPosts() {
-        posts.findAll().sort(Comparator.comparing(Post::getTitle))
+        posts.findAll()
+                .map(Post::getTitle)
+                .collectSortedList()
                 .as(StepVerifier::create)
-                .consumeNextWith(p -> assertEquals("Post one", p.getTitle()))
-                .consumeNextWith(p -> assertEquals("Post two", p.getTitle()))
+                .assertNext(list -> {
+                    assertEquals(2, list.size());
+                    assertEquals("Post one", list.get(0));
+                    assertEquals("Post two", list.get(1));
+                })
                 .verifyComplete();
     }
 
