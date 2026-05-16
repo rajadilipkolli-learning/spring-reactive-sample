@@ -12,7 +12,6 @@ import org.springframework.boot.data.mongodb.test.autoconfigure.DataMongoTest
 import org.springframework.context.annotation.Import
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 
-@Testcontainers
 @DataMongoTest
 @Import(TestcontainersConfiguration::class)
 class PostRepositoryTest {
