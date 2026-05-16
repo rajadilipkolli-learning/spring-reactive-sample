@@ -13,10 +13,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+@ContextConfiguration(initializers = {ContainersConfiguration.class})
 @SpringJUnitConfig(classes = { PostRepositoryTest.TestConfig.class })
 public class PostRepositoryTest {
 
@@ -59,8 +61,7 @@ public class PostRepositoryTest {
     @TestConfiguration(proxyBeanMethods = false)
     @Import(value = {
             DataR2dbcConfig.class,
-            CacheConfig.class,
-            ContainersConfiguration.class
+            CacheConfig.class
     })
     static class TestConfig {
     }

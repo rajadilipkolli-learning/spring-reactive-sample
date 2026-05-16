@@ -4,6 +4,9 @@ import io.r2dbc.postgresql.PostgresqlConnectionConfiguration;
 import io.r2dbc.postgresql.PostgresqlConnectionFactory;
 import io.r2dbc.spi.ConnectionFactory;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.TimeZone;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,7 +40,7 @@ public class DataR2dbcConfig extends AbstractR2dbcConfiguration {
     String password;
 
     @Bean
-    ConnectionFactory connectionFactory() {
+    public ConnectionFactory connectionFactory() {
         log.debug("Connecting to host:{},port:{},database:{},username:{},password:{}",
                 host, port, databaseName, userName, password);
         return new PostgresqlConnectionFactory(
@@ -47,6 +50,7 @@ public class DataR2dbcConfig extends AbstractR2dbcConfiguration {
                         .database(databaseName)
                         .username(userName)
                         .password(password)
+                        .timeZone(TimeZone.getTimeZone("Asia/Kolkata"))
                         .build()
         );
     }

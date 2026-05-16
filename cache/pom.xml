@@ -17,7 +17,6 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <properties>
-        <byte-buddy.version>1.17.8</byte-buddy.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.release>21</maven.compiler.release>
@@ -26,11 +25,6 @@
     </properties>
 
     <dependencies>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
 
         <!-- Spring core dependencies-->
         <dependency>
@@ -91,17 +85,6 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
         </dependency>
-        <!-- test dependencies -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
         <!--
           ! Need to update to most recent version of byte-buddy to support JDK21
           see: https://github.com/mockito/mockito/issues/3037
@@ -115,6 +98,7 @@
             <artifactId>byte-buddy-agent</artifactId>
         </dependency>
 
+        <!-- test dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux-test</artifactId>
