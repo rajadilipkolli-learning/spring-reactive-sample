@@ -9,20 +9,14 @@ import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.beans.factory.annotation.Autowired
 import reactor.test.StepVerifier
 
-@SpringBootTest(classes = [DemoApplication::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = [DemoApplication::class, TestcontainersConfiguration::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class IntegrationTests {
 
+    @Autowired
     private lateinit var client: WebClient
-
-    @LocalServerPort
-    private var port: Int = 8080
-
-    @BeforeAll
-    fun setup() {
-        client = WebClient.create("http://localhost:$port")
-    }
 
     @Test
     fun `get all posts`() {
